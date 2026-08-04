@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> 
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba MVC</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. AQUÍ MOSTRARÁ EL TÍTULO QUE ENVIAMOS DESDE JAVA -->
+    <h1 th:text="${titulo}">Texto de prueba (Esto será reemplazado)</h1>
+
+    <!-- 2. TABLA DINÁMICA -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr th:each="cat : ${categorias}">
+                <td th:text="${cat.id}">1</td>
+                <td th:text="${cat.nombre}">Nombre estático</td>
+                <td th:text="${cat.descripcion}">Descripción estática</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
