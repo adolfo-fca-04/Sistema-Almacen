@@ -2,10 +2,13 @@
 package com.almacen.sistema_almacen.controller;
 
 import com.almacen.sistema_almacen.service.CategoriaService;
+import com.almacen.sistema_almacen.model.Categoria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -14,13 +17,21 @@ public class CategoriaController {
     @Autowired
     private CategoriaService categoriaService;
     
-    //Ruta para la lista de las categorias
     @GetMapping
     public String listarCategorias(Model model) {
-        //Prueva de vista 4-08-2026
-        model.addAttribute("titulo", "Listado de Categorias de la Tienda");
+
         // Pasamos la lista de categorías extraídas de MySQL a la vista HTML
         model.addAttribute("categorias", categoriaService.listarTodas());
+        // Enviamos un objeto Categoria vacío para vincularlo al formulario HTML
+        model.addAttribute("nuevaCategoria", new Categoria());
         return "categorias/index"; // "templates/categorias/index.html"
-    }    
+    }   
+    
+    //Procesar la información enviada desde el formulario HTML (POST)
+    @PostMapping("/guardar")
+    public String guardarCategoria(@ModelAttribute("nuevaCategoria") Categoria categoria) {
+        categoriaService.guardar(categoria);
+        // Redirige nuevamente a la lista de categorías para ver el cambio reflejado
+        return "redirect:/categorias";
+    }
 }
