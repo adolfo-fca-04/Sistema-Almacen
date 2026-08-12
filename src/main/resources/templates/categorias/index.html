@@ -2,20 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org"> 
 <head>
     <meta charset="UTF-8">
-    <title>Prueba MVC</title>
+    <title>Gestion de categorias</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 30px; }
+        .form-container { background-color: #f4f4f4; padding: 20px; border-radius: 5px; margin-bottom: 20px; width: 300px; }
+        .form-group { margin-bottom: 10px; }
+        label { display: block; margin-bottom: 5px; }
+        input[type="text"] { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { background-color: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; }
+        table { border-collapse: collapse; width: 100%; }
         table { border-collapse: collapse; width: 100%; margin-top: 20px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #4CAF50; color: white; }
+        .btn-editar { color: blue; text-decoration: none; margin-right: 10px; }
+        .btn-eliminar { color: red; text-decoration: none; }
     </style>
 </head>
 <body>
 
-    <!-- 1. AQUÍ MOSTRARÁ EL TÍTULO QUE ENVIAMOS DESDE JAVA -->
-    <h1 th:text="${titulo}">Texto de prueba (Esto será reemplazado)</h1>
+    <h1>Gestión de Categorías</h1>
 
-    <!-- 2. TABLA DINÁMICA -->
+    <div class="form-container">
+        <h3 th:text="${nuevaCategoria.id == null} ? 'Nueva Categoría' : 'Editar Categoría'"></h3>
+        
+        <form th:action="@{/categorias/guardar}" th:object="${nuevaCategoria}" method="post">
+            
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" th:field="*{nombre}" required />
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <input type="text" id="descripcion" th:field="*{descripcion}" />
+            </div>
+            <button type="submit" th:text="${nuevaCategoria.id == null} ? 'Guardar' : 'Actualizar'"></button>
+            <a th:if="${nuevaCategoria.id != null}" th:href="@{/categorias}">Cancelar</a>
+        </form>
+    </div>
+
     <table>
         <thead>
             <tr>
@@ -30,6 +56,12 @@
                 <td th:text="${cat.id}">1</td>
                 <td th:text="${cat.nombre}">Nombre estático</td>
                 <td th:text="${cat.descripcion}">Descripción estática</td>
+                <td>
+                    <a th:href="@{/categorias/editar/{id}(id=${cat.id})}" class="btn-editar">Editar</a>
+                    <a th:href="@{/categorias/eliminar/{id}(id=${cat.id})}" 
+                       class="btn-eliminar"
+                       onclick="return confirm('¿Estás seguro de eliminar esta categoría?');">Eliminar</a>
+                </td>
             </tr>
         </tbody>
     </table>
