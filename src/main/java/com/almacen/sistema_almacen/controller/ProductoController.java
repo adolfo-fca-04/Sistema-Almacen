@@ -27,4 +27,24 @@ public class ProductoController {
         return "productos/index";   
     }
     
+    @PostMapping("/guardar")
+    public String guardarProducto(@ModelAttribute("nuevoProducto") Producto producto) {
+        productoService.guardar(producto);
+        return "redirect:/productos";
+    }
+
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEditar(@PathVariable("id") Long id, Model model) {
+        Producto productoExistente = productoService.buscarPorId(id);
+        model.addAttribute("productos", productoService.listarTodos());
+        model.addAttribute("categorias", categoriaService.listarTodas());
+        model.addAttribute("nuevoProducto", productoExistente);
+        return "productos/index";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminarProducto(@PathVariable("id") Long id) {
+        productoService.eliminar(id);
+        return "redirect:/productos";
+    }
 }
