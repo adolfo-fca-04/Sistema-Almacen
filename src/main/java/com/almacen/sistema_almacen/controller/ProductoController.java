@@ -4,6 +4,7 @@ package com.almacen.sistema_almacen.controller;
 import com.almacen.sistema_almacen.model.Producto;
 import com.almacen.sistema_almacen.service.CategoriaService;
 import com.almacen.sistema_almacen.service.ProductoService;
+import com.almacen.sistema_almacen.service.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,9 @@ public class ProductoController {
     
     @Autowired
     private CategoriaService categoriaService;
+    
+    @Autowired
+    private ProveedorService proveedorService;
     
     @GetMapping 
     public String listarProductos(Model model) {
@@ -38,6 +42,7 @@ public class ProductoController {
         Producto productoExistente = productoService.buscarPorId(id);
         model.addAttribute("productos", productoService.listarTodos());
         model.addAttribute("categorias", categoriaService.listarTodas());
+        model.addAttribute("proveedores", proveedorService.listarTodos());
         model.addAttribute("nuevoProducto", productoExistente);
         return "productos/index";
     }

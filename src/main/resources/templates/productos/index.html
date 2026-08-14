@@ -21,7 +21,6 @@
 
     <h1>Gestión de Productos</h1>
 
-    <!-- FORMULARIO DE PRODUCTOS -->
     <div class="form-container">
         <h3 th:text="${nuevoProducto.id == null} ? 'Nuevo Producto' : 'Editar Producto'"></h3>
         
@@ -45,11 +44,10 @@
             </div>
 
             <div class="form-group">
-                <label for="stockActual">Stock:</label>
+                <label for="stockActual">Stock Actual:</label>
                 <input type="number" id="stockActual" th:field="*{stockActual}" required />
             </div>
 
-            <!-- DESPLEGABLE DE CATEGORÍAS -->
             <div class="form-group">
                 <label for="categoria">Categoría:</label>
                 <select id="categoria" th:field="*{categoria.id}" required>
@@ -61,12 +59,22 @@
                 </select>
             </div>
 
+            <div class="form-group">
+                <label for="proveedor">Proveedor:</label>
+                <select id="proveedor" th:field="*{proveedor.id}" required>
+                    <option value="">-- Seleccionar Proveedor --</option>
+                    <option th:each="prov : ${proveedores}" 
+                            th:value="${prov.id}" 
+                            th:text="${prov.nombreEmpresa}">
+                    </option>
+                </select>
+            </div>
+
             <button type="submit" th:text="${nuevoProducto.id == null} ? 'Guardar' : 'Actualizar'"></button>
             <a th:if="${nuevoProducto.id != null}" th:href="@{/productos}">Cancelar</a>
         </form>
     </div>
 
-    <!-- TABLA DE PRODUCTOS -->
     <table>
         <thead>
             <tr>
@@ -74,8 +82,9 @@
                 <th>Código</th>
                 <th>Nombre</th>
                 <th>Precio</th>
-                <th>Stock Actual</th>
+                <th>Stock</th>
                 <th>Categoría</th>
+                <th>Proveedor</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -86,8 +95,8 @@
                 <td th:text="${prod.nombre}">Producto Ejemplo</td>
                 <td th:text="${prod.precio}">0.00</td>
                 <td th:text="${prod.stockActual}">0</td>
-                <!-- Muestra el nombre de la categoría mapeada por JPA -->
                 <td th:text="${prod.categoria != null ? prod.categoria.nombre : 'Sin categoría'}">Categoría</td>
+                <td th:text="${prod.proveedor != null ? prod.proveedor.nombreEmpresa : 'Sin proveedor'}">Proveedor</td>
                 <td>
                     <a th:href="@{/productos/editar/{id}(id=${prod.id})}" class="btn-editar">Editar</a>
                     <a th:href="@{/productos/eliminar/{id}(id=${prod.id})}" 

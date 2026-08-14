@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Proveedores</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        .form-container { background-color: #f4f4f4; padding: 20px; border-radius: 5px; margin-bottom: 20px; width: 350px; }
+        .form-group { margin-bottom: 10px; }
+        label { display: block; margin-bottom: 5px; }
+        input[type="text"], input[type="email"] { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { background-color: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        .btn-editar { color: blue; text-decoration: none; margin-right: 10px; }
+        .btn-eliminar { color: red; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <h1>Gestión de Proveedores</h1>
+
+    <div class="form-container">
+        <h3 th:text="${nuevoProveedor.id == null} ? 'Nuevo Proveedor' : 'Editar Proveedor'"></h3>
+        
+        <form th:action="@{/proveedores/guardar}" th:object="${nuevoProveedor}" method="post">
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="form-group">
+                <label for="documento">Documento (RUC / DNI):</label>
+                <input type="text" id="documento" th:field="*{documento}" required />
+            </div>
+
+            <div class="form-group">
+                <label for="nombreEmpresa">Nombre de Empresa:</label>
+                <input type="text" id="nombreEmpresa" th:field="*{nombreEmpresa}" required />
+            </div>
+
+            <div class="form-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="text" id="telefono" th:field="*{telefono}" />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" th:field="*{email}" />
+            </div>
+
+            <button type="submit" th:text="${nuevoProveedor.id == null} ? 'Guardar' : 'Actualizar'"></button>
+            <a th:if="${nuevoProveedor.id != null}" th:href="@{/proveedores}">Cancelar</a>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Documento</th>
+                <th>Empresa</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="prov : ${proveedores}">
+                <td th:text="${prov.id}">1</td>
+                <td th:text="${prov.documento}">10123456789</td>
+                <td th:text="${prov.nombreEmpresa}">Distribuidora S.A.C.</td>
+                <td th:text="${prov.telefono}">999888777</td>
+                <td th:text="${prov.email}">contacto@distribuidora.com</td>
+                <td>
+                    <a th:href="@{/proveedores/editar/{id}(id=${prov.id})}" class="btn-editar">Editar</a>
+                    <a th:href="@{/proveedores/eliminar/{id}(id=${prov.id})}" 
+                       class="btn-eliminar"
+                       onclick="return confirm('¿Deseas eliminar este proveedor?');">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

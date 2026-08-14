@@ -1,4 +1,4 @@
-package com.alamacen.sistema_almacen;
+package com.almacen.sistema_almacen;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
